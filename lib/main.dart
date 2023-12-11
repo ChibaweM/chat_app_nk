@@ -1,13 +1,26 @@
 import 'package:chat_app_nk/helper/helper_function.dart';
 import 'package:chat_app_nk/pages/home_page.dart';
+import 'package:chat_app_nk/shared/constants.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'pages/login_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+
+  if (kIsWeb) {
+    await Firebase.initializeApp(
+        options: FirebaseOptions(
+            apiKey: Constant.apiId,
+            appId: Constant.appId,
+            messagingSenderId: Constant.messageTosender,
+            projectId: Constant.projectId));
+  } else {
+    await Firebase.initializeApp();
+  }
+
   runApp(const MyApp());
 }
 
@@ -39,8 +52,11 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        primaryColor: Colors.blueAccent,
+      ),
       debugShowCheckedModeBanner: false,
-      home: _isSignedIn ? HomePage() : LoginPage(),
+      home: _isSignedIn ? const HomePage() : const LoginPage(),
     );
   }
 }
