@@ -1,4 +1,5 @@
 import 'package:chat_app_nk/helper/helper_function.dart';
+import 'package:chat_app_nk/pages/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +19,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   bool _isSignedIn = false;
 
   @override
@@ -28,19 +28,19 @@ class _MyAppState extends State<MyApp> {
     getUserLoggedInStatus();
   }
 
-  getUserLoggedInStatus() async{
+  getUserLoggedInStatus() async {
     await HelperFunctions.getUserLoggedInStatus().then((value) {
-      if(value!=null){
+      if (value != null) {
         _isSignedIn = value;
       }
-    })
-  };
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginPage(),
+      home: _isSignedIn ? HomePage() : LoginPage(),
     );
   }
 }
